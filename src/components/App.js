@@ -1,60 +1,78 @@
 import React, { Component } from 'react';
 import './../App.css';
-import { addRecipe } from './../actions/index.js'
+import { connect } from 'react-redux';
+import { addRecipe, removeFromCalendar } from './../actions/index';
+import { capitalize } from './../utils/helpers';
+import FaCalendarPlusO from 'react-icons/lib/fa/calendar-plus-o';
 
 class App extends Component {
 
-  state = {
-    calendra: null
-  }
+  clickHandler = () => {
 
-  componentDidMount() {
-
-    const { store } = this.props;
-
-    store.subscribe(() => {
-
-      this.setState(() => (
-        {
-          calendra: store.getState()
-        }
-      ));
-    });
-
-  }
-
-  submitFood = () => {
-
-    this.props.store.dispatch(addRecipe(
-      {
-        day: 'monday',
-        recipe: {
-          label: this.recipe.value
-        },
-        meal: 'breakfast'
-      }
-    ));
-
-    this.recipe.value = '';
+    this.props.addRecipe({ day: 'monday', recipe: 'Chaap', meal: 'lunch' })
   }
 
   render() {
 
+    console.log(this.props);
+    const { addRecipe, calendar } = this.props;
+    const mealOrder = ['breakfast', 'lunch', 'dinner'];
+
     return (
-      <div className="App">
-
-        <pre>
-          Monday BreakFast: {this.state.calendra && this.state.calendra.monday.breakfast}
-        </pre>
-
-        <input type="text"
-          ref={(inputDom) => this.recipe = inputDom}
-          placeholder="Enter input"
-        />
-        <button onClick={this.submitFood}>Click</button>
+      <div className='container'>
+        <ul className='meal-types'>
+          {
+            mealOrder.map((mealType) => (
+              <li key={mealType} className='subheader'>
+                {
+                  capitalize(mealType)
+                }
+              </li>
+            ))
+          }
+        </ul>
+        <div className='calendar'>
+          <div className='days'>
+            {
+              calendar.map(({ day }) => (<h3 key={day} className='subheader'>{capitalize(day)}</h3>))
+            }
+          </div>
+        </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+function mapStateToProps(calendar) {
+
+  const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+  return {
+
+    calendar: dayOrder.map(day => ({
+      day,
+      meals: Object.keys(calendar[day]).reduce(
+        (meals, meal) => {
+
+          meals[meal] = calendar[day][meal] ? calendar[day][meal] : null;
+          return meals;
+        },
+        {}
+      )
+    }))
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+
+  return {
+    addRecipe: (actionInputData) => {
+      dispatch(addRecipe(actionInputData))
+    },
+    removeRecipe: (actionInputData) => {
+      dispatch(removeFromCalendar(actionInputData))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

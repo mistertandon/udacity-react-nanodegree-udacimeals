@@ -1,6 +1,6 @@
-import { ADD_RECIPE, REMOVE_FROM_CALENDRA } from '../actions/index.js'
+import { ADD_RECIPE, REMOVE_FROM_CALENDAR } from '../actions/index.js'
 
-const initialCalendraState = {
+const initialcalendarState = {
   'monday': {
     'breakfast': null,
     'lunch': null,
@@ -38,7 +38,7 @@ const initialCalendraState = {
   },
 };
 
-function calendra(state = initialCalendraState, action) {
+function calendar(state = initialcalendarState, action) {
 
   const { type, day, recipe, meal } = action;
 
@@ -53,7 +53,7 @@ function calendra(state = initialCalendraState, action) {
         }
       };
 
-    case REMOVE_FROM_CALENDRA:
+    case REMOVE_FROM_CALENDAR:
       return {
         ...state,
         [day]: {
@@ -65,4 +65,4 @@ function calendra(state = initialCalendraState, action) {
   }
 }
 
-export default calendra;
+export default calendar;

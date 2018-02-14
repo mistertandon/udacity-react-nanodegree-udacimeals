@@ -1,5 +1,5 @@
 export const ADD_RECIPE = "ADD_RECIPE";
-export const REMOVE_FROM_CALENDRA = "REMOVE_FROM_CALENDRA";
+export const REMOVE_FROM_CALENDAR = "REMOVE_FROM_CALENDAR";
 
 export function addRecipe({ day, recipe, meal }) {
 
@@ -11,10 +11,10 @@ export function addRecipe({ day, recipe, meal }) {
   }
 }
 
-export function removeFromCalendra({ day, meal }) {
+export function removeFromCalendar({ day, meal }) {
 
   return {
-    type: REMOVE_FROM_CALENDRA,
+    type: REMOVE_FROM_CALENDAR,
     day,
     meal
   }
