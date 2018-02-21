@@ -49,7 +49,7 @@ function calendar(state = initialcalendarState, action) {
         ...state,
         [day]: {
           ...state[day],
-          [meal]: recipe.label
+          [meal]: recipe
         }
       };
 
@@ -58,7 +58,7 @@ function calendar(state = initialcalendarState, action) {
         ...state,
         [day]: {
           ...state[day],
-          meal: null
+          [meal]: null
         }
       };
     default: return state;
